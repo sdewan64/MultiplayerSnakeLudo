@@ -92,7 +92,9 @@ public class Board extends JFrame implements ActionListener{
                 squares[i][j].setBorderPainted(false);
                 squares[i][j].setContentAreaFilled(false);
                 squares[i][j].setFocusPainted(false);
-                squares[i][j].setIcon(new ImageIcon("images/board/"+numbers[index++]+".jpg"));
+                ImageIcon image = new ImageIcon("images/board/"+numbers[index++]+".jpg");
+                squares[i][j].setIcon(image);
+                squares[i][j].setRolloverIcon(image);
                 
                 boardPanel.add(squares[i][j]);
             }
@@ -104,10 +106,15 @@ public class Board extends JFrame implements ActionListener{
     private void initializeDataPanel() {
         dataPanel = new JPanel(new GridLayout(4,1));
         
+        JPanel lastPanel = new JPanel(new GridLayout(1,2));
         rollButton = new JButton("Roll");
         rollButton.addActionListener(this);
         rollButton.setEnabled(false);
         rollButton.setBorder(null);
+        lastPanel.add(rollButton);
+        
+        showCurrentPosition = new JLabel("Current Position : 0");
+        lastPanel.add(showCurrentPosition);
         
         JPanel firstPanel = new JPanel(new GridLayout(1,2));
         startGameButton = new JButton("Start Game");
@@ -115,9 +122,8 @@ public class Board extends JFrame implements ActionListener{
         startGameButton.setEnabled(false);
         startGameButton.setBorder(null);
         
-        showCurrentPosition = new JLabel("Current Position : 0");
         firstPanel.add(startGameButton);
-        firstPanel.add(showCurrentPosition);
+        
         
         statusLabel = new JLabel("Waiting to Connect...");
         statusLabel.setFont(new Font("Serif", Font.BOLD, 28));
@@ -131,11 +137,12 @@ public class Board extends JFrame implements ActionListener{
         showNumberLabel.setHorizontalAlignment(JLabel.CENTER);
         rollButton.setHorizontalAlignment(JButton.CENTER);
         startGameButton.setHorizontalAlignment(JButton.CENTER);
+        showCurrentPosition.setHorizontalAlignment(JLabel.CENTER);
         
         dataPanel.add(firstPanel);
         dataPanel.add(statusLabel);
         dataPanel.add(showNumberLabel);
-        dataPanel.add(rollButton);
+        dataPanel.add(lastPanel);
         
         container.add(dataPanel);
     }
@@ -178,9 +185,9 @@ public class Board extends JFrame implements ActionListener{
         }
     } 
     
-//    public static void main(String[] args){
-//        new Board(1,new DataInputStream(null),new DataOutputStream(null));
-//    }
+    public static void main(String[] args){
+        new Board(1,new DataInputStream(null),new DataOutputStream(null));
+    }
     
     public void enableStartGameButton(){
         startGameButton.setEnabled(true);
@@ -204,7 +211,6 @@ public class Board extends JFrame implements ActionListener{
     }
     
     public void reposition(int player,int number,int oldPosition){
-        System.out.println(id);
         if(player == id){
             showCurrentPosition.setText("Current Position : "+number);
             if(oldPosition>number){
