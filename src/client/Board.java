@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import server.ClientAdder;
 /**
@@ -206,6 +207,9 @@ public class Board extends JFrame implements ActionListener{
         System.out.println(id);
         if(player == id){
             showCurrentPosition.setText("Current Position : "+number);
+            if(oldPosition>number){
+                JOptionPane.showMessageDialog(this, "Snake got you.");
+            }
         }
         
         for(int i=0;i<BOARD_SIZE;i++){

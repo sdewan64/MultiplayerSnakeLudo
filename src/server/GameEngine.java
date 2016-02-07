@@ -5,8 +5,11 @@
  */
 
 package server;
+import common.ClientInfo;
 import static common.CommonInformation.clientInfos;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -23,10 +26,25 @@ public class GameEngine {
     
     private boolean won = false;
     
+    private final Map<Integer,Integer> ladderAndSnake = new HashMap<>();
+    
     public GameEngine(int totalPlayer){
         this.totalPlayer = totalPlayer;        
         
         currentPlayer = 0;
+        
+        ladderAndSnake.put(4, 14);
+        ladderAndSnake.put(9, 31);
+        ladderAndSnake.put(17, 7);
+        ladderAndSnake.put(20, 38);
+        ladderAndSnake.put(28, 84);
+        ladderAndSnake.put(40, 59);
+        ladderAndSnake.put(51, 67);
+        ladderAndSnake.put(63, 81);
+        ladderAndSnake.put(64, 60);
+        ladderAndSnake.put(89, 26);
+        ladderAndSnake.put(95, 75);
+        ladderAndSnake.put(99, 78);
         
         startGame();
     }
@@ -94,23 +112,26 @@ public class GameEngine {
                 }
             }else if(newPosition == 100){
                 clientInfos.get(currentPlayer).setCurrentPosition(newPosition);
-                clientInfos.stream().forEach((clientInfo)->{
+                for(ClientInfo clientInfo : clientInfos){
                     try {
                         clientInfo.getDataOutputStream().writeUTF("reposition:"+currentPlayer+":"+newPosition+":"+oldPosition);
                     } catch (IOException ex) {
                         Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                });
-                win(currentPlayer);
+                }
+                win(currentPlayer+1);
             }else{
+                if(ladderAndSnake.containsKey(newPosition)){
+                    newPosition = ladderAndSnake.get(newPosition);
+                }
                 clientInfos.get(currentPlayer).setCurrentPosition(newPosition);
-                clientInfos.stream().forEach((clientInfo)->{
+                for(ClientInfo clientInfo : clientInfos){
                     try {
                         clientInfo.getDataOutputStream().writeUTF("reposition:"+currentPlayer+":"+newPosition+":"+oldPosition);
                     } catch (IOException ex) {
                         Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                });
+                }
             }
         }
     }
