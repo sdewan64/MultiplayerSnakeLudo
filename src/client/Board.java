@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 /**
  *
  * @author Shaheed Ahmed Dewan Sagar
@@ -55,6 +56,9 @@ public class Board extends JFrame implements ActionListener{
     private JLabel showCurrentPosition;
     private JButton rollButton;
     private JButton startGameButton;
+    private JButton dice;
+    
+    private Random random = new Random();
     
     int[] numbers = {
         100,99,98,97,96,95,94,93,92,91,
@@ -74,6 +78,8 @@ public class Board extends JFrame implements ActionListener{
         this.id = id;
         this.dataInputStream = dataInputStream;
         this.dataOutputStream = dataOutputStream;
+        
+        random.setSeed(System.currentTimeMillis());
         
         initializeBoard();
         initializeDataPanel();
@@ -127,11 +133,18 @@ public class Board extends JFrame implements ActionListener{
         
         statusLabel = new JLabel("Waiting to Connect...");
         statusLabel.setFont(new Font("Serif", Font.BOLD, 28));
-        statusLabel.setForeground(Color.RED);
+        statusLabel.setForeground(new Color(44, 62, 80));
         
+        JPanel mediumPanel = new JPanel(new GridLayout(1,2));
         showNumberLabel = new JLabel("Rolled : ");
         showNumberLabel.setFont(new Font("Serif", Font.BOLD, 14));
         showNumberLabel.setForeground(Color.MAGENTA);
+        mediumPanel.add(showNumberLabel);
+        
+        dice = new JButton();
+        dice.setBorder(null);
+        dice.setBackground(new Color(238, 238, 238));
+        mediumPanel.add(dice);
         
         JPanel lastPanel = new JPanel(new GridLayout(1,2));
         rollButton = new JButton("Roll");
@@ -151,8 +164,10 @@ public class Board extends JFrame implements ActionListener{
         
         dataPanel.add(firstPanel);
         dataPanel.add(statusLabel);
-        dataPanel.add(showNumberLabel);
+        dataPanel.add(mediumPanel);
         dataPanel.add(lastPanel);
+        
+        boardPanel.setBackground(new Color(52, 152, 219));
         
         container.add(dataPanel);
     }
@@ -169,8 +184,11 @@ public class Board extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent actionEvent) {
         if(actionEvent.getSource() == rollButton){
             rollButton.setEnabled(false);
-            int roller = new Random().nextInt(6)+1;
+            int roller = random.nextInt(6)+1;
+  
+            dice.setIcon(new ImageIcon("images/dice/"+roller+".png"));
             showNumberLabel.setText("Rolled : "+roller);
+            
             try {
                 dataOutputStream.writeUTF("roll:"+roller);
             } catch (IOException ex) {
@@ -194,7 +212,7 @@ public class Board extends JFrame implements ActionListener{
             }
         }
     } 
-    
+        
     public static void main(String[] args){
         new Board(1,new DataInputStream(null),new DataOutputStream(null));
     }
