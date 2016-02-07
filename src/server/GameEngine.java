@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class GameEngine {
     
-    private final int totalPlayer;
+    private int totalPlayer;
     
     private int currentPlayer;
     
@@ -53,6 +53,12 @@ public class GameEngine {
                 }
             } catch (IOException ex) {
                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
+                clientInfos.remove(clientInfos.get(currentPlayer));
+                totalPlayer--;
+                currentPlayer++;
+                if(currentPlayer == totalPlayer){
+                    currentPlayer = 0;
+                }
             }
         }
     }

@@ -8,6 +8,8 @@ package server;
 
 import static common.CommonInformation.clientInfos;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -35,10 +35,10 @@ public class Client {
             dataInputStream = new DataInputStream(client.getInputStream());
             dataOutputStream = new DataOutputStream(client.getOutputStream());
             
-            board = new Board(id,dataInputStream,dataOutputStream);
             String welcomeMsg = readData();
             JOptionPane.showMessageDialog(board, welcomeMsg.split(":")[0]);
             id = Integer.parseInt(welcomeMsg.split(":")[1]);
+            board = new Board(id,dataInputStream,dataOutputStream);
             board.connected();
             
             new ClientActionHandler().start();

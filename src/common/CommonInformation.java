@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class CommonInformation {
     public static final String frameHeader = "Multiplayer Snake Ludo";
-    public static final String HOST = "localhost";
+    public static final String HOST = "0.0.0.0";
     public static final int PORT = 8590;
     
     public static List<ClientInfo> clientInfos = new ArrayList<>();

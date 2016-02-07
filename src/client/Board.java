@@ -47,6 +47,7 @@ public class Board extends JFrame implements ActionListener{
     
     private JLabel statusLabel;
     private JLabel showNumberLabel;
+    private JLabel showCurrentPosition;
     private JButton rollButton;
     private JButton startGameButton;
     
@@ -107,10 +108,15 @@ public class Board extends JFrame implements ActionListener{
         rollButton.setEnabled(false);
         rollButton.setBorder(null);
         
+        JPanel firstPanel = new JPanel(new GridLayout(1,2));
         startGameButton = new JButton("Start Game");
         startGameButton.addActionListener(this);
         startGameButton.setEnabled(false);
         startGameButton.setBorder(null);
+        
+        showCurrentPosition = new JLabel("Current Position : 0");
+        firstPanel.add(startGameButton);
+        firstPanel.add(showCurrentPosition);
         
         statusLabel = new JLabel("Waiting to Connect...");
         statusLabel.setFont(new Font("Serif", Font.BOLD, 28));
@@ -125,7 +131,7 @@ public class Board extends JFrame implements ActionListener{
         rollButton.setHorizontalAlignment(JButton.CENTER);
         startGameButton.setHorizontalAlignment(JButton.CENTER);
         
-        dataPanel.add(startGameButton);
+        dataPanel.add(firstPanel);
         dataPanel.add(statusLabel);
         dataPanel.add(showNumberLabel);
         dataPanel.add(rollButton);
@@ -171,9 +177,9 @@ public class Board extends JFrame implements ActionListener{
         }
     } 
     
-    public static void main(String[] args){
-        new Board(1,new DataInputStream(null),new DataOutputStream(null));
-    }
+//    public static void main(String[] args){
+//        new Board(1,new DataInputStream(null),new DataOutputStream(null));
+//    }
     
     public void enableStartGameButton(){
         startGameButton.setEnabled(true);
@@ -197,6 +203,11 @@ public class Board extends JFrame implements ActionListener{
     }
     
     public void reposition(int player,int number,int oldPosition){
+        System.out.println(id);
+        if(player == id){
+            showCurrentPosition.setText("Current Position : "+number);
+        }
+        
         for(int i=0;i<BOARD_SIZE;i++){
             for(int j=0;j<BOARD_SIZE;j++){
                 if(squares[i][j].getText().equals(String.valueOf(number))){
