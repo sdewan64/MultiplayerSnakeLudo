@@ -42,7 +42,16 @@ public class Server {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
-        new GameEngine(clientInfos.size());
+        new GameEngine(clientInfos.size(),this);
+    }
+    
+    public void resart(){
+        try {
+            server.close();
+            new Server().start();
+        } catch (IOException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void main(String args[]){

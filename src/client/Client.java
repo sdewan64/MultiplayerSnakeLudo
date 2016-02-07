@@ -31,10 +31,13 @@ public class Client {
     
     private void start(){
         try {
+            String name = JOptionPane.showInputDialog("Enter Your Name");
+            
             Socket client = new Socket(common.CommonInformation.HOST, common.CommonInformation.PORT);
             dataInputStream = new DataInputStream(client.getInputStream());
             dataOutputStream = new DataOutputStream(client.getOutputStream());
             
+            dataOutputStream.writeUTF(name);
             String welcomeMsg = readData();
             JOptionPane.showMessageDialog(board, welcomeMsg.split(":")[0]);
             id = Integer.parseInt(welcomeMsg.split(":")[1]);

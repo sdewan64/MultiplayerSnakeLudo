@@ -18,19 +18,25 @@ import java.io.DataOutputStream;
 public class ClientInfo {
     
     private final int id;
+    private final String name;
     private final DataInputStream dataInputStream;
     private final DataOutputStream dataOutputStream;
     
     private int currentPosition = 0;
 
-    public ClientInfo(int id, DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
+    public ClientInfo(int id, String name,DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
         this.id = id;
+        this.name = name;
         this.dataInputStream = dataInputStream;
         this.dataOutputStream = dataOutputStream;
     }
-    
+
     public int getId() {
         return id;
+    }
+    
+    public String getName() {
+        return name;
     }
 
     public DataInputStream getDataInputStream() {

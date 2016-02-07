@@ -27,12 +27,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import server.ClientAdder;
 /**
  *
  * @author Shaheed Ahmed Dewan Sagar
  *         AUST-12.01.04.085
  *         sdewan64@gmail.com
+ */
+
+/**
+ * 
+ * Board Image Credited to : lmoptics
  */
 public class Board extends JFrame implements ActionListener{
     private final int id;
@@ -105,6 +109,29 @@ public class Board extends JFrame implements ActionListener{
     
     private void initializeDataPanel() {
         dataPanel = new JPanel(new GridLayout(4,1));
+                
+        JPanel firstPanel = new JPanel(new GridLayout(1,2));
+        startGameButton = new JButton("Start Game");
+        startGameButton.addActionListener(this);
+        startGameButton.setEnabled(false);
+        startGameButton.setBorder(null);
+        
+        JButton selfGuti = new JButton("Your Pawn");
+        selfGuti.setBorder(null);
+        selfGuti.setIcon(new ImageIcon("images/circle/"+id+".png"));
+        selfGuti.setBackground(new Color(238, 238, 238));
+        selfGuti.setHorizontalTextPosition(JButton.LEFT);
+        firstPanel.add(startGameButton);
+        firstPanel.add(selfGuti);
+        
+        
+        statusLabel = new JLabel("Waiting to Connect...");
+        statusLabel.setFont(new Font("Serif", Font.BOLD, 28));
+        statusLabel.setForeground(Color.RED);
+        
+        showNumberLabel = new JLabel("Rolled : ");
+        showNumberLabel.setFont(new Font("Serif", Font.BOLD, 14));
+        showNumberLabel.setForeground(Color.MAGENTA);
         
         JPanel lastPanel = new JPanel(new GridLayout(1,2));
         rollButton = new JButton("Roll");
@@ -115,23 +142,6 @@ public class Board extends JFrame implements ActionListener{
         
         showCurrentPosition = new JLabel("Current Position : 0");
         lastPanel.add(showCurrentPosition);
-        
-        JPanel firstPanel = new JPanel(new GridLayout(1,2));
-        startGameButton = new JButton("Start Game");
-        startGameButton.addActionListener(this);
-        startGameButton.setEnabled(false);
-        startGameButton.setBorder(null);
-        
-        firstPanel.add(startGameButton);
-        
-        
-        statusLabel = new JLabel("Waiting to Connect...");
-        statusLabel.setFont(new Font("Serif", Font.BOLD, 28));
-        statusLabel.setForeground(Color.RED);
-        
-        showNumberLabel = new JLabel("Rolled : ");
-        showNumberLabel.setFont(new Font("Serif", Font.BOLD, 14));
-        showNumberLabel.setForeground(Color.MAGENTA);
         
         statusLabel.setHorizontalAlignment(JLabel.CENTER);
         showNumberLabel.setHorizontalAlignment(JLabel.CENTER);

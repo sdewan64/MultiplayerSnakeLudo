@@ -40,9 +40,11 @@ public class ClientAdder extends Thread {
         while(!interrupted()){
             try {
                 Socket client = server.accept();
-                ClientInfo clientInfo = new ClientInfo(id, new DataInputStream(client.getInputStream()), new DataOutputStream(client.getOutputStream()));
+                DataInputStream dataInputStream = new DataInputStream(client.getInputStream());
+                DataOutputStream dataOutputStream = new DataOutputStream(client.getOutputStream());
+                ClientInfo clientInfo = new ClientInfo(id, dataInputStream.readUTF(), dataInputStream, dataOutputStream);
                 common.CommonInformation.clientInfos.add(clientInfo);
-                clientInfo.getDataOutputStream().writeUTF("connected:"+id);
+                clientInfo.getDataOutputStream().writeUTF("Welcome "+clientInfo.getName()+"\nYou are connected:"+id);
                 if(id == 0){
                     new ClientAdderStopper(clientInfo).start();
                     clientInfo.getDataOutputStream().writeUTF("enableStart");

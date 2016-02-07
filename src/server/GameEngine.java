@@ -20,16 +20,18 @@ import java.util.logging.Logger;
  */
 public class GameEngine {
     
-    private int totalPlayer;
+    private Server server;
     
+    private int totalPlayer;
     private int currentPlayer;
     
     private boolean won = false;
     
     private final Map<Integer,Integer> ladderAndSnake = new HashMap<>();
     
-    public GameEngine(int totalPlayer){
+    public GameEngine(int totalPlayer, Server server){
         this.totalPlayer = totalPlayer;        
+        this.server = server;
         
         currentPlayer = 0;
         
@@ -79,6 +81,7 @@ public class GameEngine {
                 }
             }
         }
+        server.resart();
     }
 
     private void calculate(int rolledNumber) {
@@ -119,7 +122,7 @@ public class GameEngine {
                         Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                win(currentPlayer+1);
+                win(clientInfos.get(currentPlayer).getName());
             }else{
                 if(ladderAndSnake.containsKey(newPosition)){
                     newPosition = ladderAndSnake.get(newPosition);
@@ -136,10 +139,10 @@ public class GameEngine {
         }
     }
 
-    private void win(int winner) {
+    private void win(String winner) {
         clientInfos.stream().forEach((clientInfo)->{
             try {
-                clientInfo.getDataOutputStream().writeUTF("show:Player "+winner+" won!");
+                clientInfo.getDataOutputStream().writeUTF("show:"+winner+" won!");
             } catch (IOException ex) {
                 Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
             }
